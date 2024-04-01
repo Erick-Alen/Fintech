@@ -12,7 +12,7 @@ export const useLocalStorage = ({ key, init }: useLocalStorageProps) => {
   });
   useEffect(() => {
     localStorage.setItem(key, localStorageKey);
-  });
+  }, [key, localStorageKey]);
   
   // 'as const' defines that the order of this array will never change
   return [localStorageKey, setLocalStorageKey] as const;
