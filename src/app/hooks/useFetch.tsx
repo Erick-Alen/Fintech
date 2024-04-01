@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 
-type UseFetchProps<T> = {
-  url: RequestInfo;
+type UseFetchProps = {
+  url: RequestInfo | URL;
   options?: RequestInit;
 };
 
-export const useFetch = <T,>({ url, options }: UseFetchProps<T>) => {
+type FetchState<T> = {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export const useFetch = <T,>({ url, options }: UseFetchProps): FetchState<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -15,9 +21,8 @@ export const useFetch = <T,>({ url, options }: UseFetchProps<T>) => {
     setLoading(false);
     setData(null)
     const controller = new AbortController();
-    const { abort, signal } = controller;
+    const { signal } = controller;
     const fetchData = async () => {
-      controller.abort;
       try {
         setLoading(true);
         const response = await fetch(url, {
@@ -35,7 +40,7 @@ export const useFetch = <T,>({ url, options }: UseFetchProps<T>) => {
     };
     fetchData();
     return () => {
-      abort();
+      controller.abort();
     };
   }, [url]);
   return { data, loading, error };
