@@ -7,6 +7,6 @@ type HeaderProps = {
 
 export const Header = ({ }: HeaderProps) => {
   const { data, error, loading } = useDataContext()
-  console.log(data)
+  // console.log(data)
   return <div><DateRange/></div>
 }
